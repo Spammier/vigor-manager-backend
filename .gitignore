@@ -1,0 +1,24 @@
+# Java/Maven build artifacts
+**/target/
+
+# IDE configuration files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# Configuration files with sensitive data
+# Commit the .example versions instead
+src/main/resources/application.properties
+src/main/resources/application.yml
+
+# Log files
+*.log
+
+# Environment variables file
+.env*
+
+# Operating System generated files
+.DS_Store
+Thumbs.db 

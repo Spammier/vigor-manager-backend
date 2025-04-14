@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件上传测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .upload-form {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background-color: #dff0d8;
+            border-color: #d6e9c6;
+            color: #3c763d;
+        }
+        .error {
+            background-color: #f2dede;
+            border-color: #ebccd1;
+            color: #a94442;
+        }
+        .image-preview {
+            max-width: 100%;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>文件上传测试</h1>
+    <div class="upload-form">
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file">选择文件：</label>
+                <input type="file" id="file" name="file" required>
+            </div>
+            <button type="submit" class="button">上传</button>
+        </form>
+    </div>
+    
+    <div id="result" class="result">
+        <div id="resultText"></div>
+        <div id="imagePreview"></div>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            var formData = new FormData();
+            var fileInput = document.getElementById('file');
+            
+            if (fileInput.files.length === 0) {
+                alert('请选择文件！');
+                return;
+            }
+            
+            formData.append('file', fileInput.files[0]);
+            
+            // 显示加载中...
+            var resultDiv = document.getElementById('result');
+            resultDiv.className = 'result';
+            resultDiv.style.display = 'block';
+            document.getElementById('resultText').innerText = '上传中，请稍候...';
+            document.getElementById('imagePreview').innerHTML = '';
+            
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.code === 1) {
+                    resultDiv.className = 'result success';
+                    document.getElementById('resultText').innerText = '上传成功！文件访问路径：' + data.data;
+                    
+                    // 如果是图片，则显示预览
+                    var fileType = fileInput.files[0].type;
+                    if (fileType.startsWith('image/')) {
+                        var img = document.createElement('img');
+                        img.src = data.data;
+                        img.className = 'image-preview';
+                        document.getElementById('imagePreview').appendChild(img);
+                    }
+                } else {
+                    resultDiv.className = 'result error';
+                    document.getElementById('resultText').innerText = '上传失败：' + data.msg;
+                }
+            })
+            .catch(error => {
+                resultDiv.className = 'result error';
+                document.getElementById('resultText').innerText = '上传出错：' + error.message;
+            });
+        });
+    </script>
+</body>
+</html> 

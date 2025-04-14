@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hello.mapper.StudentInfoMapper">
+
+    <select id="list" resultType="com.example.hello.pojo.StudentInfo">
+        SELECT
+            id, name, gender, student_number, phone, qq, wechat, id_number,
+            address, birthday, education, graduate_school, major,
+            graduation_date, employment_status, class_id
+        FROM
+            student_info
+        <where>
+            <if test="name != null and name != ''">
+                AND name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="studentNumber != null and studentNumber != ''">
+                AND student_number = #{studentNumber}
+            </if>
+            <if test="education != null and education != ''">
+                AND education = #{education}
+            </if>
+            <if test="classId != null">
+                AND class_id = #{classId}
+            </if>
+        </where>
+        <!-- 如果需要排序，可以添加 ORDER BY 子句 -->
+        <!-- ORDER BY id ASC -->
+    </select>
+
+    <!-- 其他方法 (findById, insert, update, deleteById, countByClassId) 已在接口中使用注解定义 -->
+
+</mapper> 

@@ -1,0 +1,36 @@
+# Spring Boot Configuration Example (YAML Format)
+
+# 数据库连接配置 (示例)
+# 如果同时存在 application.properties，根据 Spring Boot 加载优先级确定哪个生效
+# 通常 .properties 优先级高于 .yml
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # === 数据库连接 URL (示例) ===
+    # 替换为你的数据库连接信息
+    url: jdbc:mysql://YOUR_DB_HOST:YOUR_DB_PORT/YOUR_DATABASE_NAME?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    # === 数据库用户名 (示例) ===
+    username: YOUR_DB_USERNAME
+    # === 数据库密码 (示例) ===
+    password: YOUR_DB_PASSWORD
+
+# MyBatis 配置 (通常无需修改)
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  type-aliases-package: com.example.hello.pojo
+  configuration:
+    map-underscore-to-camel-case: true
+
+# PageHelper 分页插件配置 (通常无需修改)
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+# 日志级别配置 (示例)
+logging:
+  level:
+    # 将指定包的日志级别设为 DEBUG，方便开发调试
+    com.example.hello.mapper: debug
+    # root: info # 可以设置根日志级别 
