@@ -1,0 +1,115 @@
+    <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                                  https://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+      <pluginGroups>
+        <pluginGroup>org.sonatype.plugins</pluginGroup>
+      </pluginGroups>
+
+      <proxies>
+        <!-- proxy
+         | Specification for one proxy, to be used in connecting to the network.
+         |-->
+        <!--proxy>
+          <id>optional</id>
+          <active>true</active>
+          <protocol>http</protocol>
+          <username>proxyuser</username>
+          <password>proxypass</password>
+          <host>proxy.host.net</host>
+          <port>80</port>
+          <nonProxyHosts>local.net|some.host.com</nonProxyHosts>
+        </proxy-->
+      </proxies>
+
+      <servers>
+        <!-- server
+         | Specifies the authentication information to use when connecting to a particular server, identified by
+         | its server id.
+         |-->
+        <!--server>
+          <id>deploymentRepo</id>
+          <username>repouser</username>
+          <password>repopwd</password>
+        </server-->
+
+        <!-- Another sample, using keys to authenticate.
+        <server>
+          <id>siteServer</id>
+          <privateKey>/path/to/private/key</privateKey>
+          <passphrase>optional; leave empty if not used.</passphrase>
+        </server>
+        -->
+      </servers>
+
+      <mirrors>
+        <!-- mirror
+         | Specifies a repository mirror site to use instead of a given repository. The repository that
+         | this mirror serves has an ID that matches the mirrorOf element of this mirror. IDs are used
+         | for inheritance and direct lookup purposes, and must be unique across the set of mirrors.
+         | -->
+        <mirror>
+          <id>aliyunmaven</id>
+          <mirrorOf>*</mirrorOf> <!-- * 代表镜像所有仓库 -->
+          <name>阿里云公共仓库</name>
+          <url>https://maven.aliyun.com/repository/public</url>
+        </mirror>
+      </mirrors>
+
+      <profiles>
+        <!-- profile
+         | Specifies a set of introductions to the build process, to be activated using one or more of the
+         | mechanisms described above. For inheritance purposes, and to activate profiles via settings properties,
+         | profiles have to have an ID that is unique.
+         |
+         | An active profile profile will have all of its defined values activated for the build.
+         |-->
+        <profile>
+          <id>jdk-1.8</id>
+          <activation>
+            <activeByDefault>true</activeByDefault>
+            <jdk>1.8</jdk>
+          </activation>
+          <properties>
+            <maven.compiler.source>1.8</maven.compiler.source>
+            <maven.compiler.target>1.8</maven.compiler.target>
+            <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+          </properties>
+        </profile>
+
+        <profile>
+          <!-- an example profile -->
+          <id>profile-1</id>
+          <repositories>
+            <repository>
+              <id>aliyun</id>
+              <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+              <releases>
+                <enabled>true</enabled>
+              </releases>
+              <snapshots>
+                <enabled>false</enabled>
+              </snapshots>
+            </repository>
+          </repositories>
+          <pluginRepositories>
+            <pluginRepository>
+              <id>aliyun</id>
+              <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+              <releases>
+                <enabled>true</enabled>
+              </releases>
+              <snapshots>
+                <enabled>false</enabled>
+              </snapshots>
+            </pluginRepository>
+          </pluginRepositories>
+        </profile>
+      </profiles>
+
+      <activeProfiles>
+        <activeProfile>profile-1</activeProfile>
+      </activeProfiles>
+
+    </settings>

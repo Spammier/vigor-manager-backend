@@ -22,7 +22,7 @@ import io.minio.PutObjectArgs;
 public class FileController {
 
     @Value("${minio.endpoint}")
-    private String endpoint;
+    private String endpoint; // This is the configured endpoint (e.g., https://minio-api.doitapp.top)
 
     @Value("${minio.accessKey}")
     private String accessKey;
@@ -32,9 +32,6 @@ public class FileController {
 
     @Value("${minio.bucketName}")
     private String bucketName;
-
-    // 外部服务地址，用于文件访问
-    private static final String EXTERNAL_ENDPOINT = "https://objectstorageapi.hzh.sealos.run";
 
     /**
      * 文件上传
@@ -52,7 +49,7 @@ public class FileController {
 
             // 创建MinIO客户端，使用配置文件中注入的外部端点地址 (endpoint)
             MinioClient minioClient = MinioClient.builder()
-                .endpoint(endpoint)
+                .endpoint(endpoint) // Use the configured endpoint for connection
                 .credentials(accessKey, secretKey)
                 .build();
 
@@ -73,8 +70,8 @@ public class FileController {
                     .build()
             );
 
-            // 构建文件访问路径（使用外部服务地址）
-            String fileUrl = EXTERNAL_ENDPOINT + "/" + bucketName + "/" + fileName;
+            // 构建文件访问路径（使用配置中注入的 endpoint 地址）
+            String fileUrl = endpoint + "/" + bucketName + "/" + fileName;
 
             // 返回结果
             return Result.success(fileUrl);
